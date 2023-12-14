@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XOXO Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #eee;
+        }
+        .game {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-template-rows: repeat(3, 100px);
+            gap: 1px;
+            background-color: #fff;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        .cell {
+            width: 100px;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+            border: 1px solid #ddd;
+            cursor: pointer;
+        }
+        .cell:hover {
+            background-color: #f0f0f0;
+        }
+        .player1 {
+            color: #f00;
+        }
+        .player2 {
+            color: #00f;
+        }
+    </style>
+</head>
+<body>
+    <div class="game"></div>
+    <script>
+        const cells = document.querySelectorAll('.cell');
+        let player = 1;
+
+        function checkWinner(player) {
+            const wins = [
+                [0, 1, 2],
+                [3, 4, 5],
+                [6, 7, 8],
+                [0, 3, 6],
+                [1, 4, 7],
+                [2, 5, 8],
+                [0, 4, 8],
+                [2, 4, 6]
+            ];
+            for (let win of wins) {
+                let hasWon = true;
+                for (let index of win) {
+                    if (cells[index].className.indexOf('player' + player) === -1) {
+                        hasWon = false;
+                        break;
+                    }
+                }
+                if (hasWon) return true;
+            }
+            return false;
+        }
+
+        cells.forEach((cell, index) => {
+            cell.addEventListener('click', () => {
+                if (cell.className.indexOf('player') === -1) {
+                    cell.className += ' player' + player;
+                    if (checkWinner(player)) {
+                        alert('Player ' + player + ' wins!');
+                        location.reload();
+                    } else {
+                        player = player === 1 ? 2 : 1;
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
